@@ -17,7 +17,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          "Inter",
+          "Ranade",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
