@@ -86,14 +86,15 @@ export default function Home() {
         >
           <div>
             <p className="mb-6 inline-flex rounded-full bg-lucht px-4 py-2 text-sm font-semibold text-blad">
-              AI ondersteund ontwikkelplatform voor basisscholen
+              Persoonlijk onderwijs zonder extra werkdruk
             </p>
             <h1 className="max-w-4xl text-4xl font-black leading-[1.04] tracking-tight text-inkt sm:text-6xl">
               Elk kind verdient de ruimte om te groeien.
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-inkt/72 sm:mt-7 sm:text-xl">
-              Groeivonk helpt basisscholen ieder kind beter te begrijpen, zonder de werkdruk van
-              leerkrachten te verhogen.
+              Groeivonk helpt basisscholen een compleet beeld van ieder kind op te bouwen. Minder
+              administratie voor leerkrachten, meer inzicht voor ouders en meer ruimte voor
+              persoonlijke ontwikkeling.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row">
               <a
@@ -186,6 +187,25 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="bg-[#F8EFE4] px-5 py-20 sm:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-4xl">
+            <h2 className="text-4xl font-black tracking-tight text-inkt sm:text-5xl">
+              Stel je voor dat het anders kan
+            </h2>
+            <div className="mt-6 space-y-6 text-lg leading-8 text-inkt/72">
+              <p>
+                Een school waarin kinderen voor rekenen, taal en lezen op hun eigen niveau kunnen
+                werken, terwijl de sociale groep behouden blijft. Waar talenten zichtbaar worden,
+                ouders continu inzicht hebben en leerkrachten minder tijd kwijt zijn aan
+                administratie.
+              </p>
+              <p>Dat is de toekomst waar Groeivonk aan bouwt.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="px-5 py-24 sm:px-8" id="oplossing">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
@@ -197,6 +217,10 @@ export default function Home() {
               Groeivonk brengt leerontwikkeling, welzijn, talentontwikkeling en observaties samen in
               een doorlopend ontwikkelverhaal. Zo ontstaat een rustig en volledig beeld van het kind,
               waarin resultaten betekenis krijgen naast gedrag, motivatie, interesses en groei.
+            </p>
+            <p className="mt-5 text-lg leading-8 text-inkt/72">
+              Groeivonk maakt ontwikkeling zichtbaar zonder van de leerkracht nóg een
+              registratiesysteem te vragen.
             </p>
           </div>
 
