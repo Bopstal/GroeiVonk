@@ -321,7 +321,7 @@ export default function Home() {
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-aarde">Onze visie</p>
             <h2 className="mt-4 text-4xl font-black tracking-tight text-inkt sm:text-5xl">
-              Basisvaardigheden blijven de basis.
+              Basisvaardigheden zijn het vertrekpunt, niet de bestemming.
             </h2>
           </div>
           <div className="rounded-[2rem] bg-white p-8 text-lg leading-8 text-inkt/72 shadow-sm ring-1 ring-inkt/8 sm:p-10">
