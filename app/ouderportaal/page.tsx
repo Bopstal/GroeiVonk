@@ -741,10 +741,12 @@ function DevelopmentAreaDetail({
   area,
   activeTab,
   onTabChange,
+  onClose,
 }: {
   area: DevelopmentArea;
   activeTab: DetailTab;
   onTabChange: (tab: DetailTab) => void;
+  onClose: () => void;
 }) {
   return (
     <div className="rounded-[2rem] bg-white p-5 shadow-zacht ring-1 ring-inkt/8 sm:p-8">
@@ -762,6 +764,13 @@ function DevelopmentAreaDetail({
             Laatste observatie
           </p>
           <p className="mt-2 leading-7 text-inkt/78">{area.latestObservation}</p>
+          <button
+            type="button"
+            onClick={onClose}
+            className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 text-sm font-black text-inkt shadow-sm ring-1 ring-inkt/10 transition hover:bg-klei focus-visible:focus-ring"
+          >
+            Sluiten
+          </button>
         </div>
       </div>
 
@@ -852,13 +861,16 @@ function DevelopmentAreaDetail({
 }
 
 function DevelopmentOverview({ onBack }: { onBack: () => void }) {
-  const [selectedAreaName, setSelectedAreaName] = useState(developmentAreas[0].name);
+  const [selectedAreaName, setSelectedAreaName] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<DetailTab>("overview");
-  const selectedArea =
-    developmentAreas.find((area) => area.name === selectedAreaName) ?? developmentAreas[0];
 
   function selectArea(areaName: string) {
     setSelectedAreaName(areaName);
+    setActiveTab("overview");
+  }
+
+  function closeArea() {
+    setSelectedAreaName(null);
     setActiveTab("overview");
   }
 
@@ -905,21 +917,25 @@ function DevelopmentOverview({ onBack }: { onBack: () => void }) {
         <section className="py-8">
           <SectionHeader eyebrow="Ontwikkelgebieden" title="Emma's ontwikkelportfolio" />
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {developmentAreas.map((area) => (
-              <DevelopmentAreaCard
-                key={area.name}
-                area={area}
-                isSelected={area.name === selectedArea.name}
-                onSelect={() => selectArea(area.name)}
-              />
-            ))}
-          </div>
-          <div className="mt-8">
-            <DevelopmentAreaDetail
-              area={selectedArea}
-              activeTab={activeTab}
-              onTabChange={setActiveTab}
-            />
+            {developmentAreas.map((area) =>
+              area.name === selectedAreaName ? (
+                <div key={area.name} className="md:col-span-2 xl:col-span-3">
+                  <DevelopmentAreaDetail
+                    area={area}
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                    onClose={closeArea}
+                  />
+                </div>
+              ) : (
+                <DevelopmentAreaCard
+                  key={area.name}
+                  area={area}
+                  isSelected={false}
+                  onSelect={() => selectArea(area.name)}
+                />
+              ),
+            )}
           </div>
         </section>
 
