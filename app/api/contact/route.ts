@@ -8,6 +8,7 @@ type ContactRequest = {
   role?: string;
   school?: string;
   message?: string;
+  privacyConsent?: string;
   website?: string;
 };
 
@@ -55,6 +56,7 @@ export async function POST(request: Request) {
   const role = asText(body.role);
   const school = asText(body.school);
   const message = asText(body.message);
+  const privacyConsent = asText(body.privacyConsent);
 
   if (!name || !email || !role || !message) {
     return NextResponse.json(
@@ -66,6 +68,13 @@ export async function POST(request: Request) {
   if (!emailPattern.test(email)) {
     return NextResponse.json(
       { message: "Vul een geldig e-mailadres in." },
+      { status: 400 },
+    );
+  }
+
+  if (privacyConsent !== "yes") {
+    return NextResponse.json(
+      { message: "Geef toestemming om je gegevens te gebruiken voor contact over je bericht." },
       { status: 400 },
     );
   }
@@ -91,6 +100,7 @@ export async function POST(request: Request) {
     `E-mailadres: ${email}`,
     `Rol: ${role}`,
     `School: ${school || "Niet ingevuld"}`,
+    "Toestemming: gegeven voor contact over dit bericht",
     "",
     "Bericht:",
     message,

@@ -115,6 +115,23 @@ export function PilotForm() {
         <div className="sm:col-span-2">
           <Field label="Bericht" name="message" textarea required />
         </div>
+        <label
+          htmlFor="privacyConsent"
+          className="flex items-start gap-3 rounded-2xl bg-white/75 p-4 text-sm leading-6 text-inkt/78 ring-1 ring-inkt/10 sm:col-span-2"
+        >
+          <input
+            id="privacyConsent"
+            name="privacyConsent"
+            type="checkbox"
+            required
+            value="yes"
+            className="mt-1 h-5 w-5 shrink-0 rounded border-inkt/20 text-blad focus:ring-4 focus:ring-blad/20"
+          />
+          <span>
+            Ik geef toestemming dat Groeivonk mijn gegevens gebruikt om contact met mij op te
+            nemen over mijn bericht.
+          </span>
+        </label>
       </div>
       <button
         type="submit"
