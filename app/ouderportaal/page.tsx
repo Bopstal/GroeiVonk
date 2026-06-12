@@ -682,49 +682,6 @@ function TrendBadge({ trend }: { trend: Trend }) {
   );
 }
 
-function DevelopmentAreaCard({
-  area,
-  isSelected,
-  onSelect,
-}: {
-  area: DevelopmentArea;
-  isSelected: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <article
-      className={`flex min-h-[300px] flex-col justify-between rounded-[1.5rem] bg-white p-6 shadow-sm ring-1 transition ${
-        isSelected ? "ring-blad/45 shadow-zacht" : "ring-inkt/8 hover:ring-blad/25"
-      }`}
-    >
-      <div>
-        <div className="mb-5 flex items-center justify-between gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-lucht text-blad">
-            <SparkIcon className="h-5 w-5" />
-          </span>
-          <TrendBadge trend={area.trend} />
-        </div>
-        <h3 className="text-2xl font-black text-inkt">{area.name}</h3>
-        <p className="mt-4 leading-7 text-inkt/72">{area.summary}</p>
-        <div className="mt-5 rounded-2xl bg-klei/55 p-4">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-aarde">
-            Laatste observatie
-          </p>
-          <p className="mt-2 leading-7 text-inkt/78">{area.latestObservation}</p>
-        </div>
-      </div>
-      <button
-        type="button"
-        onClick={onSelect}
-        className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-blad px-5 text-sm font-black text-white transition hover:bg-[#356955] focus-visible:focus-ring"
-      >
-        Bekijk ontwikkeling
-        <ArrowIcon />
-      </button>
-    </article>
-  );
-}
-
 function DetailList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-3">
@@ -741,12 +698,10 @@ function DevelopmentAreaDetail({
   area,
   activeTab,
   onTabChange,
-  onClose,
 }: {
   area: DevelopmentArea;
   activeTab: DetailTab;
   onTabChange: (tab: DetailTab) => void;
-  onClose: () => void;
 }) {
   return (
     <div className="rounded-[2rem] bg-white p-5 shadow-zacht ring-1 ring-inkt/8 sm:p-8">
@@ -764,13 +719,6 @@ function DevelopmentAreaDetail({
             Laatste observatie
           </p>
           <p className="mt-2 leading-7 text-inkt/78">{area.latestObservation}</p>
-          <button
-            type="button"
-            onClick={onClose}
-            className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 text-sm font-black text-inkt shadow-sm ring-1 ring-inkt/10 transition hover:bg-klei focus-visible:focus-ring"
-          >
-            Sluiten
-          </button>
         </div>
       </div>
 
@@ -860,17 +808,66 @@ function DevelopmentAreaDetail({
   );
 }
 
+function TrendDot({ trend }: { trend: Trend }) {
+  const classes: Record<Trend, string> = {
+    groei: "bg-[#3F7C65]",
+    stabiel: "bg-[#F3B45B]",
+    aandacht: "bg-[#C85C4A]",
+  };
+
+  return <span className={`h-3 w-3 shrink-0 rounded-full ${classes[trend]}`} />;
+}
+
+function DevelopmentAreaTabs({
+  areas,
+  selectedAreaName,
+  onSelect,
+}: {
+  areas: DevelopmentArea[];
+  selectedAreaName: string;
+  onSelect: (areaName: string) => void;
+}) {
+  return (
+    <div className="rounded-[1.5rem] bg-white p-3 shadow-sm ring-1 ring-inkt/8">
+      <div className="mb-3 px-2 pt-2 text-xs font-bold uppercase tracking-[0.14em] text-aarde">
+        Ontwikkelgebieden
+      </div>
+      <div className="space-y-2">
+        {areas.map((area) => {
+          const isSelected = area.name === selectedAreaName;
+
+          return (
+            <button
+              key={area.name}
+              type="button"
+              onClick={() => onSelect(area.name)}
+              className={`flex min-h-14 w-full items-center gap-3 rounded-2xl px-4 py-3 text-left transition focus-visible:focus-ring ${
+                isSelected ? "bg-klei/75 text-inkt" : "text-inkt/74 hover:bg-lucht/55"
+              }`}
+            >
+              <TrendDot trend={area.trend} />
+              <span className="min-w-0">
+                <span className="block text-sm font-black">{area.name}</span>
+                <span className="mt-1 block text-xs font-bold uppercase tracking-[0.12em] text-aarde">
+                  {area.trend}
+                </span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function DevelopmentOverview({ onBack }: { onBack: () => void }) {
-  const [selectedAreaName, setSelectedAreaName] = useState<string | null>(null);
+  const [selectedAreaName, setSelectedAreaName] = useState(developmentAreas[0].name);
   const [activeTab, setActiveTab] = useState<DetailTab>("overview");
+  const selectedArea =
+    developmentAreas.find((area) => area.name === selectedAreaName) ?? developmentAreas[0];
 
   function selectArea(areaName: string) {
     setSelectedAreaName(areaName);
-    setActiveTab("overview");
-  }
-
-  function closeArea() {
-    setSelectedAreaName(null);
     setActiveTab("overview");
   }
 
@@ -916,26 +913,17 @@ function DevelopmentOverview({ onBack }: { onBack: () => void }) {
 
         <section className="py-8">
           <SectionHeader eyebrow="Ontwikkelgebieden" title="Emma's ontwikkelportfolio" />
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {developmentAreas.map((area) =>
-              area.name === selectedAreaName ? (
-                <div key={area.name} className="md:col-span-2 xl:col-span-3">
-                  <DevelopmentAreaDetail
-                    area={area}
-                    activeTab={activeTab}
-                    onTabChange={setActiveTab}
-                    onClose={closeArea}
-                  />
-                </div>
-              ) : (
-                <DevelopmentAreaCard
-                  key={area.name}
-                  area={area}
-                  isSelected={false}
-                  onSelect={() => selectArea(area.name)}
-                />
-              ),
-            )}
+          <div className="grid gap-6 lg:grid-cols-[300px_1fr] lg:items-start">
+            <DevelopmentAreaTabs
+              areas={developmentAreas}
+              selectedAreaName={selectedArea.name}
+              onSelect={selectArea}
+            />
+            <DevelopmentAreaDetail
+              area={selectedArea}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
           </div>
         </section>
 
