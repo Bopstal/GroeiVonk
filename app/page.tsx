@@ -227,11 +227,14 @@ export default function Home() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {teacherBenefits.map((benefit) => (
-              <div key={benefit} className="flex items-start gap-4 rounded-3xl bg-white/8 p-5 ring-1 ring-white/10">
-                <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zon text-inkt">
+              <div
+                key={benefit}
+                className="flex min-h-20 items-center gap-4 rounded-3xl bg-white/8 p-5 ring-1 ring-white/10"
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zon text-inkt">
                   <CheckIcon />
                 </span>
-                <span className="text-lg font-semibold">{benefit}</span>
+                <span className="text-lg font-semibold leading-snug">{benefit}</span>
               </div>
             ))}
           </div>
@@ -253,11 +256,14 @@ export default function Home() {
           <div className="space-y-4">
             <h3 className="text-2xl font-black text-inkt">Continue inzichten in:</h3>
             {parentInsights.map((insight) => (
-              <div key={insight} className="flex items-start gap-4 rounded-3xl bg-lucht/60 p-5">
-                <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-blad">
+              <div
+                key={insight}
+                className="flex min-h-20 items-center gap-4 rounded-3xl bg-lucht/60 p-5"
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-blad">
                   <CheckIcon />
                 </span>
-                <span className="text-lg text-inkt/78">{insight}</span>
+                <span className="text-lg leading-snug text-inkt/78">{insight}</span>
               </div>
             ))}
           </div>
