@@ -25,16 +25,16 @@ function getResendErrorMessage(error: ResendError | null) {
   const message = error?.message ?? "";
   const lowerMessage = message.toLowerCase();
 
-  if (
-    lowerMessage.includes("domain") ||
-    lowerMessage.includes("from") ||
-    lowerMessage.includes("sender")
-  ) {
+  if (lowerMessage.includes("api key") || lowerMessage.includes("permission")) {
+    return "De Resend API key klopt niet of heeft geen verzendrechten. Controleer RESEND_API_KEY in Vercel.";
+  }
+
+  if (lowerMessage.includes("domain")) {
     return "Het afzenderadres is nog niet goed ingesteld. Controleer CONTACT_FROM en verifieer je domein in Resend.";
   }
 
-  if (lowerMessage.includes("api key") || lowerMessage.includes("permission")) {
-    return "De Resend API key klopt niet of heeft geen verzendrechten. Controleer RESEND_API_KEY in Vercel.";
+  if (message) {
+    return `Resend kon de mail niet versturen: ${message}`;
   }
 
   return "Het versturen is niet gelukt. Controleer de Resend logs voor de exacte oorzaak.";
