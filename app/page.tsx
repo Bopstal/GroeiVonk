@@ -279,7 +279,7 @@ export default function Home() {
               Heeft mijn kind het naar zijn zin?
             </h2>
             <p className="mt-6 text-lg leading-8 text-inkt/72">
-              Dat is vaak de eerste en belangrijkste vraag. Groeivonk helpt scholen ouders
+              Dat is vaak de eerste en belangrijkste vraag. Groeivonk helpt scholen én ouders
               doorlopend en begrijpelijk mee te nemen in hoe het met hun kind gaat.
             </p>
           </div>
