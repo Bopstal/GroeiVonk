@@ -30,7 +30,7 @@ function getResendErrorMessage(error: ResendError | null) {
   }
 
   if (lowerMessage.includes("domain")) {
-    return "Het afzenderadres is nog niet goed ingesteld. Controleer CONTACT_FROM en verifieer je domein in Resend.";
+    return `Het afzenderadres of ontvangstadres is nog niet goed ingesteld. Resend meldt: ${message}`;
   }
 
   if (message) {
