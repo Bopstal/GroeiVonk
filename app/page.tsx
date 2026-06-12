@@ -1,3 +1,5 @@
+import { PilotForm } from "@/components/pilot-form";
+
 const teacherBenefits = [
   "Minder administratie",
   "Meer inzicht",
@@ -32,8 +34,6 @@ const childBenefits = [
   },
 ];
 
-const roles = ["Leerkracht", "Intern begeleider", "Schoolleider", "Ouder", "Anders"];
-
 function SparkIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 48 48" className="h-9 w-9">
@@ -57,39 +57,6 @@ function CheckIcon() {
         strokeWidth="2.4"
       />
     </svg>
-  );
-}
-
-function Field({
-  label,
-  type = "text",
-  textarea = false,
-}: {
-  label: string;
-  type?: string;
-  textarea?: boolean;
-}) {
-  const id = label.toLowerCase().replace(/\s+/g, "-");
-
-  return (
-    <label htmlFor={id} className="block">
-      <span className="mb-2 block text-sm font-semibold text-inkt">{label}</span>
-      {textarea ? (
-        <textarea
-          id={id}
-          name={id}
-          rows={5}
-          className="w-full rounded-2xl border border-inkt/10 bg-white px-4 py-3 text-base text-inkt shadow-sm transition focus:outline-none focus:ring-4 focus:ring-blad/20"
-        />
-      ) : (
-        <input
-          id={id}
-          name={id}
-          type={type}
-          className="h-12 w-full rounded-2xl border border-inkt/10 bg-white px-4 text-base text-inkt shadow-sm transition focus:outline-none focus:ring-4 focus:ring-blad/20"
-        />
-      )}
-    </label>
   );
 }
 
@@ -353,34 +320,7 @@ export default function Home() {
             </p>
           </div>
 
-          <form className="rounded-[2rem] bg-klei/70 p-6 shadow-zacht ring-1 ring-inkt/8 sm:p-8">
-            <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Naam" />
-              <Field label="E-mailadres" type="email" />
-              <label htmlFor="rol" className="block">
-                <span className="mb-2 block text-sm font-semibold text-inkt">Rol</span>
-                <select
-                  id="rol"
-                  name="rol"
-                  className="h-12 w-full rounded-2xl border border-inkt/10 bg-white px-4 text-base text-inkt shadow-sm transition focus:outline-none focus:ring-4 focus:ring-blad/20"
-                >
-                  {roles.map((role) => (
-                    <option key={role}>{role}</option>
-                  ))}
-                </select>
-              </label>
-              <Field label="School" />
-              <div className="sm:col-span-2">
-                <Field label="Bericht" textarea />
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="mt-6 inline-flex min-h-14 w-full items-center justify-center rounded-full bg-blad px-7 text-base font-bold text-white shadow-zacht transition hover:bg-[#356955] focus-visible:focus-ring sm:w-auto"
-            >
-              Verstuur mijn bericht
-            </button>
-          </form>
+          <PilotForm />
         </div>
       </section>
     </main>
