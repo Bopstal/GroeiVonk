@@ -6,6 +6,14 @@ const roles = ["Leerkracht", "Intern begeleider", "Schoolleider", "Ouder", "Ande
 
 type SubmitState = "idle" | "sending" | "success" | "error";
 
+function RequiredMark() {
+  return (
+    <span aria-hidden="true" className="ml-1 text-aarde">
+      *
+    </span>
+  );
+}
+
 function Field({
   label,
   name,
@@ -21,7 +29,10 @@ function Field({
 }) {
   return (
     <label htmlFor={name} className="block">
-      <span className="mb-2 block text-sm font-semibold text-inkt">{label}</span>
+      <span className="mb-2 block text-sm font-semibold text-inkt">
+        {label}
+        {required ? <RequiredMark /> : null}
+      </span>
       {textarea ? (
         <textarea
           id={name}
@@ -93,7 +104,10 @@ export function PilotForm() {
         <Field label="Naam" name="name" required />
         <Field label="E-mailadres" name="email" type="email" required />
         <label htmlFor="role" className="block">
-          <span className="mb-2 block text-sm font-semibold text-inkt">Rol</span>
+          <span className="mb-2 block text-sm font-semibold text-inkt">
+            Rol
+            <RequiredMark />
+          </span>
           <select
             id="role"
             name="role"
@@ -130,6 +144,7 @@ export function PilotForm() {
           <span>
             Ik geef toestemming dat Groeivonk mijn gegevens gebruikt om contact met mij op te
             nemen over mijn bericht.
+            <RequiredMark />
           </span>
         </label>
       </div>
