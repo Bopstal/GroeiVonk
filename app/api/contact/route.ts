@@ -11,8 +11,32 @@ type ContactRequest = {
   website?: string;
 };
 
+type ResendError = {
+  message?: string;
+  name?: string;
+};
+
 function asText(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
+}
+
+function getResendErrorMessage(error: ResendError | null) {
+  const message = error?.message ?? "";
+  const lowerMessage = message.toLowerCase();
+
+  if (
+    lowerMessage.includes("domain") ||
+    lowerMessage.includes("from") ||
+    lowerMessage.includes("sender")
+  ) {
+    return "Het afzenderadres is nog niet goed ingesteld. Controleer CONTACT_FROM en verifieer je domein in Resend.";
+  }
+
+  if (lowerMessage.includes("api key") || lowerMessage.includes("permission")) {
+    return "De Resend API key klopt niet of heeft geen verzendrechten. Controleer RESEND_API_KEY in Vercel.";
+  }
+
+  return "Het versturen is niet gelukt. Controleer de Resend logs voor de exacte oorzaak.";
 }
 
 export async function POST(request: Request) {
@@ -88,8 +112,15 @@ export async function POST(request: Request) {
   });
 
   if (!response.ok) {
+    const resendError = (await response.json().catch(() => null)) as ResendError | null;
+
+    console.error("Resend kon de contactmail niet versturen", {
+      status: response.status,
+      error: resendError,
+    });
+
     return NextResponse.json(
-      { message: "Het versturen is niet gelukt. Probeer het later opnieuw." },
+      { message: getResendErrorMessage(resendError) },
       { status: 502 },
     );
   }
