@@ -61,6 +61,39 @@ const timeline = [
   },
 ];
 
+const growthCharts = [
+  {
+    title: "Begrijpend lezen",
+    data: [
+      { label: "September", value: 42 },
+      { label: "Januari", value: 55 },
+      { label: "April", value: 68 },
+      { label: "Nu", value: 76 },
+    ],
+    text: "Emma laat sinds januari duidelijke groei zien in begrijpend lezen. School blijft oefenen met het herkennen van hoofdgedachten en verbanden in teksten.",
+  },
+  {
+    title: "Rekenen automatiseren",
+    data: [
+      { label: "September", value: 58 },
+      { label: "Januari", value: 64 },
+      { label: "April", value: 71 },
+      { label: "Nu", value: 79 },
+    ],
+    text: "Emma werkt zelfstandiger aan rekentaken en maakt minder fouten bij bekende somtypen.",
+  },
+  {
+    title: "Welbevinden",
+    data: [
+      { label: "September", value: 60 },
+      { label: "Januari", value: 63 },
+      { label: "April", value: 78 },
+      { label: "Nu", value: 84 },
+    ],
+    text: "Emma lijkt zich steeds zekerder te voelen in de groep en neemt vaker initiatief tijdens samenwerken.",
+  },
+];
+
 const talents = ["Creatief denken", "Samenwerken", "Doorzetten", "Presenteren", "Zorgzaam"];
 
 const schoolActions = [
@@ -76,9 +109,18 @@ const homeActions = [
 ];
 
 const moments = [
-  "Emma presenteerde haar onderzoek over vulkanen.",
-  "Emma nam tijdens het duurzaamheidsproject de rol van ontwerper op zich.",
-  "Emma hielp een klasgenoot bij een lastige rekenopdracht.",
+  {
+    title: "Onderzoek vulkanen",
+    text: "Emma presenteerde haar onderzoek over vulkanen aan de klas.",
+  },
+  {
+    title: "Duurzaamheidsproject",
+    text: "Emma nam tijdens het groepsproject de rol van ontwerper op zich.",
+  },
+  {
+    title: "Samen leren",
+    text: "Emma hielp een klasgenoot bij een lastige rekenopdracht.",
+  },
 ];
 
 function SparkIcon({ className = "h-6 w-6" }: { className?: string }) {
@@ -278,6 +320,78 @@ function CheckList({ items }: { items: string[] }) {
   );
 }
 
+function GrowthChart({
+  title,
+  data,
+  text,
+}: {
+  title: string;
+  data: { label: string; value: number }[];
+  text: string;
+}) {
+  const min = Math.min(...data.map((item) => item.value));
+  const max = Math.max(...data.map((item) => item.value));
+  const range = Math.max(max - min, 1);
+  const points = data.map((item, index) => {
+    const x = 38 + (index / (data.length - 1)) * 224;
+    const y = 104 - ((item.value - min) / range) * 72;
+
+    return { ...item, x, y };
+  });
+  const linePoints = points.map((point) => `${point.x},${point.y}`).join(" ");
+
+  return (
+    <article className="rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-inkt/8 sm:p-6">
+      <h3 className="text-xl font-black text-inkt">{title}</h3>
+      <div className="mt-5 overflow-hidden rounded-2xl bg-[#FBF6EE] p-3">
+        <svg
+          aria-label={`Ontwikkeling ${title}`}
+          role="img"
+          viewBox="0 0 300 150"
+          className="h-44 w-full"
+        >
+          <path d="M32 32H268" stroke="#DCEBE7" strokeLinecap="round" strokeWidth="1.5" />
+          <path d="M32 68H268" stroke="#DCEBE7" strokeLinecap="round" strokeWidth="1.5" />
+          <path d="M32 104H268" stroke="#DCEBE7" strokeLinecap="round" strokeWidth="1.5" />
+          <polyline
+            fill="none"
+            points={linePoints}
+            stroke="#3F7C65"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="4"
+          />
+          {points.map((point) => (
+            <circle
+              key={point.label}
+              cx={point.x}
+              cy={point.y}
+              fill="#FFF8ED"
+              r="5"
+              stroke="#3F7C65"
+              strokeWidth="3"
+            />
+          ))}
+          {points.map((point) => (
+            <text
+              key={`${point.label}-label`}
+              fill="#8E5B3F"
+              fontSize="10"
+              fontWeight="700"
+              textAnchor="middle"
+              x={point.x}
+              y="134"
+            >
+              {point.label}
+            </text>
+          ))}
+        </svg>
+      </div>
+      <p className="mt-5 leading-7 text-inkt/72">{text}</p>
+    </article>
+  );
+}
+
 function DevelopmentOverview({ onBack }: { onBack: () => void }) {
   return (
     <main className="min-h-screen bg-[#FFF8ED] px-5 py-6 sm:px-8">
@@ -316,6 +430,20 @@ function DevelopmentOverview({ onBack }: { onBack: () => void }) {
                 ))}
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="py-8">
+          <SectionHeader eyebrow="Ontwikkeling in beeld" title="Groei rustig gevolgd" />
+          <div className="grid gap-5 lg:grid-cols-3">
+            {growthCharts.map((chart) => (
+              <GrowthChart
+                key={chart.title}
+                title={chart.title}
+                data={chart.data}
+                text={chart.text}
+              />
+            ))}
           </div>
         </section>
 
@@ -377,8 +505,9 @@ function DevelopmentOverview({ onBack }: { onBack: () => void }) {
           <SectionHeader eyebrow="Momenten uit de klas" title="Wat de leerkracht ziet" />
           <div className="grid gap-5 md:grid-cols-3">
             {moments.map((moment) => (
-              <article key={moment} className="rounded-[1.5rem] bg-lucht/60 p-6">
-                <p className="text-lg leading-8 text-inkt/78">{moment}</p>
+              <article key={moment.title} className="rounded-[1.5rem] bg-lucht/60 p-6">
+                <h3 className="text-xl font-black text-inkt">{moment.title}</h3>
+                <p className="mt-4 text-lg leading-8 text-inkt/78">{moment.text}</p>
               </article>
             ))}
           </div>
@@ -387,8 +516,8 @@ function DevelopmentOverview({ onBack }: { onBack: () => void }) {
         <section className="pb-16 pt-10">
           <SectionHeader eyebrow="Bericht van de leerkracht" title="Een korte terugkoppeling" />
           <blockquote className="rounded-[2rem] bg-inkt p-6 text-xl font-semibold leading-9 text-white shadow-zacht sm:p-8">
-            “Emma heeft de afgelopen weken een mooie stap gezet in haar zelfvertrouwen. Vooral
-            tijdens samenwerkingsopdrachten zien we haar steeds meer initiatief nemen.”
+            &quot;Emma heeft de afgelopen weken een mooie stap gezet in haar zelfvertrouwen. Vooral
+            tijdens samenwerkingsopdrachten zien we haar steeds meer initiatief nemen.&quot;
           </blockquote>
         </section>
       </div>
